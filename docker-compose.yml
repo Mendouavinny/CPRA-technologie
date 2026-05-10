@@ -1,0 +1,24 @@
+services:
+  app:
+    image: ghcr.io/mendouavinny/cpra-technologie:latest
+    container_name: cpra-app
+    restart: unless-stopped
+    env_file: .env
+    networks:
+      - internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cpra.rule=Host(`cpratechnology.com`) || Host(`www.cpratechnology.com`)"
+      - "traefik.http.routers.cpra.entrypoints=websecure"
+      - "traefik.http.routers.cpra.tls.certresolver=letsencrypt"
+      - "traefik.http.services.cpra.loadbalancer.server.port=3000"
+      - "traefik.docker.network=cpra_internal"
+      # Redirect www → non-www
+      - "traefik.http.middlewares.cpra-www-redirect.redirectregex.regex=^https://www\\.cpratechnology\\.com/(.*)"
+      - "traefik.http.middlewares.cpra-www-redirect.redirectregex.replacement=https://cpratechnology.com/$${1}"
+      - "traefik.http.middlewares.cpra-www-redirect.redirectregex.permanent=true"
+      - "traefik.http.routers.cpra.middlewares=cpra-www-redirect"
+
+networks:
+  internal:
+    driver: bridge

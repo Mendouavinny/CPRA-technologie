@@ -136,12 +136,12 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-4">
               <a
-                href="https://www.cpratechsarl.com"
+                href="https://www.cpratechnology.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm text-muted-foreground hover:text-primary transition-colors"
               >
-                www.cpratechsarl.com
+                www.cpratechnology.com
               </a>
             </div>
           </div>
