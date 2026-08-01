@@ -4,6 +4,10 @@ services:
     container_name: cpra-app
     restart: unless-stopped
     env_file: .env
+    # Volume persistant pour la base de données (fichier data/store.json).
+    # Les modifications de l'admin survivent ainsi aux redéploiements.
+    volumes:
+      - cpra-data:/app/data
     networks:
       - internal
     labels:
@@ -22,3 +26,6 @@ services:
 networks:
   internal:
     driver: bridge
+
+volumes:
+  cpra-data:

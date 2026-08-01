@@ -4,41 +4,8 @@ import { type ChangeEvent, type FormEvent, useState } from "react";
 import { CheckCircle, Clock, Mail, MapPin, Phone, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  BRAND_NAME,
-  CONTACT_EMAIL,
-  CONTACT_PHONE,
-  CONTACT_PHONE_HREF,
-  WHATSAPP_URL,
-  buildMailtoUrl,
-} from "@/lib/contact";
-
-const contactInfo = [
-  {
-    icon: Phone,
-    label: "Téléphone",
-    value: CONTACT_PHONE,
-    href: CONTACT_PHONE_HREF,
-  },
-  {
-    icon: Mail,
-    label: "Email",
-    value: CONTACT_EMAIL,
-    href: `mailto:${CONTACT_EMAIL}`,
-  },
-  {
-    icon: MapPin,
-    label: "Adresse",
-    value: "DOUALA-Bonaberi, Cameroun",
-    href: "https://maps.google.com/?q=Douala+Bonaberi+Cameroun",
-  },
-  {
-    icon: Clock,
-    label: "Horaires",
-    value: "Lun-Ven: 8h-17h",
-    href: null,
-  },
-];
+import { useSiteStore } from "@/components/site-store";
+import { phoneHrefFrom } from "@/lib/site-defaults";
 
 const subjectLabels: Record<string, string> = {
   devis: "Demande de devis",
@@ -50,6 +17,8 @@ const subjectLabels: Record<string, string> = {
 };
 
 export function Contact() {
+  const { state } = useSiteStore();
+  const { contact } = state;
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -60,13 +29,40 @@ export function Contact() {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const contactInfo = [
+    {
+      icon: Phone,
+      label: "Téléphone",
+      value: contact.phone,
+      href: phoneHrefFrom(contact.phone),
+    },
+    {
+      icon: Mail,
+      label: "Email",
+      value: contact.email,
+      href: `mailto:${contact.email}`,
+    },
+    {
+      icon: MapPin,
+      label: "Adresse",
+      value: contact.address,
+      href: `https://maps.google.com/?q=${encodeURIComponent(contact.address)}`,
+    },
+    {
+      icon: Clock,
+      label: "Horaires",
+      value: contact.hours,
+      href: null,
+    },
+  ];
+
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
     const subjectLabel = subjectLabels[formData.subject] ?? "Message";
     const subject = `${subjectLabel} - ${formData.name}`;
     const body = [
-      `Bonjour ${BRAND_NAME},`,
+      `Bonjour ${contact.brandName},`,
       "",
       formData.message,
       "",
@@ -80,7 +76,9 @@ export function Contact() {
       "Merci.",
     ].join("\n");
 
-    window.location.href = buildMailtoUrl(subject, body);
+    window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
     setIsSubmitted(true);
     window.setTimeout(() => setIsSubmitted(false), 4000);
     setFormData({
@@ -161,7 +159,7 @@ export function Contact() {
                 réponse immédiate.
               </p>
               <a
-                href={WHATSAPP_URL}
+                href={contact.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
@@ -306,7 +304,7 @@ export function Contact() {
                 </Button>
                 {isSubmitted && (
                   <span className="text-sm text-muted-foreground">
-                    Votre messagerie s&apos;ouvre avec {CONTACT_EMAIL} en destinataire.
+                    Votre messagerie s&apos;ouvre avec {contact.email} en destinataire.
                   </span>
                 )}
               </div>

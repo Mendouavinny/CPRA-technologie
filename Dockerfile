@@ -32,6 +32,12 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Dossier de la base de données (fichier JSON). Doit appartenir à l'utilisateur
+# "nextjs" pour être inscriptible, et être monté sur un volume pour persister
+# les données entre les redéploiements (voir docker-compose.yml).
+RUN mkdir -p /app/data && chown -R nextjs:nodejs /app/data
+VOLUME /app/data
+
 USER nextjs
 
 EXPOSE 3000

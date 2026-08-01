@@ -14,3 +14,8 @@ next.user-config.*
 node_modules
 .next/
 .DS_Store
+
+# Base de données locale (fichier JSON du serveur) — ne pas committer
+/data/
+# Build artifact TypeScript
+tsconfig.tsbuildinfo

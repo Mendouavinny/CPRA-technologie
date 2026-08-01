@@ -10,13 +10,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  BRAND_NAME,
-  CONTACT_EMAIL,
-  CONTACT_PHONE,
-  CONTACT_PHONE_HREF,
-  LEGAL_NAME,
-} from "@/lib/contact";
+import { useSiteStore } from "@/components/site-store";
+import { phoneHrefFrom } from "@/lib/site-defaults";
 
 const navigation = [
   { name: "Accueil", href: "#accueil" },
@@ -33,39 +28,60 @@ const navigation = [
     ],
   },
   { name: "Catalogue", href: "#catalogue" },
+  { name: "Formation", href: "#formation" },
+  { name: "Service IA", href: "#ia" },
   { name: "Secteurs", href: "#secteurs" },
+  { name: "Carrière", href: "#carriere" },
   { name: "À propos", href: "#apropos" },
   { name: "Contact", href: "#contact" },
 ];
 
 export function Header() {
+  const { state } = useSiteStore();
+  const { contact, messages } = state;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [announcementOpen, setAnnouncementOpen] = useState(true);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+      {announcementOpen && messages.announcement.trim() && (
+        <div className="bg-primary text-primary-foreground">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-center gap-3 text-center text-xs sm:text-sm">
+            <span className="line-clamp-2">{messages.announcement}</span>
+            <button
+              type="button"
+              onClick={() => setAnnouncementOpen(false)}
+              aria-label="Fermer l'annonce"
+              className="flex-shrink-0 opacity-80 hover:opacity-100"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
       <div className="bg-primary/10 py-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-6">
               <a
-                href={CONTACT_PHONE_HREF}
+                href={phoneHrefFrom(contact.phone)}
                 className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
               >
                 <Phone className="h-4 w-4" />
-                <span>{CONTACT_PHONE}</span>
+                <span>{contact.phone}</span>
               </a>
               <a
-                href={`mailto:${CONTACT_EMAIL}`}
+                href={`mailto:${contact.email}`}
                 className="hidden sm:flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
               >
                 <Mail className="h-4 w-4" />
-                <span>{CONTACT_EMAIL}</span>
+                <span>{contact.email}</span>
               </a>
             </div>
             <div className="flex items-center gap-2 text-muted-foreground">
               <MapPin className="h-4 w-4" />
-              <span className="hidden sm:inline">DOUALA-Bonaberi, Cameroun</span>
-              <span className="sm:hidden">Douala</span>
+              <span className="hidden sm:inline">{contact.address}</span>
+              <span className="sm:hidden">{contact.address.split(",")[0]}</span>
             </div>
           </div>
         </div>
@@ -79,15 +95,15 @@ export function Header() {
             </div>
             <div className="flex flex-col">
               <span className="font-bold text-lg text-foreground">
-                {BRAND_NAME}
+                {contact.brandName}
               </span>
               <span className="text-xs text-muted-foreground hidden sm:block">
-                {LEGAL_NAME}
+                {contact.legalName}
               </span>
             </div>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden xl:flex items-center gap-0.5">
             {navigation.map((item) =>
               item.submenu ? (
                 <DropdownMenu key={item.name}>
@@ -117,7 +133,7 @@ export function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="px-4 py-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+                  className="px-3 py-2 text-sm font-medium text-foreground hover:text-primary transition-colors whitespace-nowrap"
                 >
                   {item.name}
                 </Link>
@@ -125,7 +141,7 @@ export function Header() {
             )}
           </div>
 
-          <div className="hidden lg:block">
+          <div className="hidden xl:block">
             <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
               <Link href="#contact">Demander un devis</Link>
             </Button>
@@ -133,7 +149,7 @@ export function Header() {
 
           <button
             type="button"
-            className="lg:hidden p-2 text-foreground"
+            className="xl:hidden p-2 text-foreground"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label="Ouvrir le menu"
           >
@@ -146,7 +162,7 @@ export function Header() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-border">
+          <div className="xl:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-2">
               {navigation.map((item) => (
                 <div key={item.name}>
