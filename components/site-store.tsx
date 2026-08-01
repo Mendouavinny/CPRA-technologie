@@ -21,6 +21,7 @@ import {
   type SiteState,
 } from "@/lib/site-defaults";
 import { isValidAdminCode } from "@/lib/admin";
+import { resizeImage } from "@/lib/image";
 
 const STORAGE_KEY = "cpra_site_state_v1";
 const ADMIN_FLAG_KEY = "cpra_admin_session";
@@ -48,6 +49,7 @@ type SiteStore = {
   removeApplication: (id: number | string) => void;
   updateContact: (patch: Partial<ContactInfo>) => void;
   updateMessages: (patch: Partial<SiteMessages>) => void;
+  uploadImage: (file: File) => Promise<string>;
 };
 
 const SiteStoreContext = createContext<SiteStore | null>(null);
@@ -377,6 +379,29 @@ export function SiteStoreProvider({ children }: { children: ReactNode }) {
     [commit]
   );
 
+  // Importe une image : compression navigateur, puis envoi serveur (volume
+  // persistant) en mode partagé, ou image intégrée (data URL) en mode local.
+  const uploadImage = useCallback(async (file: File) => {
+    const { dataUrl, blob } = await resizeImage(file);
+    if (modeRef.current === "server") {
+      try {
+        const formData = new FormData();
+        formData.append("file", blob, "image.jpg");
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+        if (res.ok) {
+          const data = (await res.json()) as { url: string };
+          return data.url;
+        }
+      } catch {
+        /* repli sur la data URL ci-dessous */
+      }
+    }
+    return dataUrl;
+  }, []);
+
   const value = useMemo<SiteStore>(
     () => ({
       state,
@@ -396,6 +421,7 @@ export function SiteStoreProvider({ children }: { children: ReactNode }) {
       removeApplication,
       updateContact,
       updateMessages,
+      uploadImage,
     }),
     [
       state,
@@ -415,6 +441,7 @@ export function SiteStoreProvider({ children }: { children: ReactNode }) {
       removeApplication,
       updateContact,
       updateMessages,
+      uploadImage,
     ]
   );
 

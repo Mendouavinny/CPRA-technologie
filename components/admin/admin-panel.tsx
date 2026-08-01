@@ -1,7 +1,7 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
-import { RotateCcw, Trash2, Plus, Save } from "lucide-react";
+import { type ChangeEvent, type FormEvent, useState } from "react";
+import { RotateCcw, Trash2, Plus, Save, Upload } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -29,7 +29,7 @@ function toList(value: string): string[] {
 /* -------------------------------------------------------------------- */
 
 function ProductsTab() {
-  const { state, addProduct, removeProduct } = useSiteStore();
+  const { state, addProduct, removeProduct, uploadImage } = useSiteStore();
   const productCategories = state.categories.filter((c) => c !== "Tous");
   const [form, setForm] = useState({
     name: "",
@@ -40,6 +40,19 @@ function ProductsTab() {
     usage: "",
     technical: "",
   });
+  const [uploading, setUploading] = useState(false);
+
+  const handleImage = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const url = await uploadImage(file);
+      setForm((f) => ({ ...f, image: url }));
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
@@ -60,6 +73,7 @@ function ProductsTab() {
       description: "",
       usage: "",
       technical: "",
+      image: "/placeholder.jpg",
     }));
   };
 
@@ -103,12 +117,32 @@ function ProductsTab() {
           </div>
         </div>
         <div className="space-y-1.5">
-          <Label>Image (chemin)</Label>
-          <Input
-            value={form.image}
-            onChange={(e) => setForm({ ...form, image: e.target.value })}
-            placeholder="/images/products/mon-produit.jpg"
-          />
+          <Label>Photo du produit</Label>
+          <div className="flex items-center gap-3">
+            <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-border bg-secondary">
+              {/* Aperçu (image importée ou par défaut). */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={form.image}
+                alt="Aperçu"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <label className="inline-flex cursor-pointer items-center gap-2 rounded-md border border-border bg-input px-3 py-2 text-sm text-foreground hover:bg-secondary">
+              <Upload className="h-4 w-4" />
+              {uploading ? "Import en cours..." : "Importer une image"}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImage}
+                disabled={uploading}
+              />
+            </label>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Choisis une photo depuis ton appareil (redimensionnée automatiquement).
+          </p>
         </div>
         <div className="space-y-1.5">
           <Label>Description</Label>

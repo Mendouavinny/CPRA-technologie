@@ -17,5 +17,6 @@ node_modules
 
 # Base de données locale (fichier JSON du serveur) — ne pas committer
 /data/
+
 # Build artifact TypeScript
 tsconfig.tsbuildinfo
