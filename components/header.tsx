@@ -14,26 +14,26 @@ import { useSiteStore } from "@/components/site-store";
 import { phoneHrefFrom } from "@/lib/site-defaults";
 
 const navigation = [
-  { name: "Accueil", href: "#accueil" },
+  { name: "Accueil", href: "/" },
   {
-    name: "Services",
-    href: "#services",
+    name: "Univers",
+    href: "/#univers",
     submenu: [
-      { name: "Réactifs chimiques", href: "#reactifs" },
-      { name: "Équipements industriels", href: "#equipements" },
-      { name: "Traitement des surfaces", href: "#traitement" },
-      { name: "Revêtement des surfaces", href: "#revetement" },
-      { name: "Protection anticorrosion", href: "#anticorrosion" },
-      { name: "Cosmétiques", href: "#cosmetiques" },
+      { name: "Particuliers", href: "/univers/particuliers" },
+      { name: "Entreprises", href: "/univers/entreprises" },
+      { name: "Salons de beauté", href: "/univers/salons-de-beaute" },
+      { name: "Santé & Laboratoires", href: "/univers/sante" },
+      { name: "Hôtels & Restaurants", href: "/univers/hotels-restaurants" },
+      { name: "CPRA Job (Jeunes)", href: "/univers/jeunes-etudiants" },
+      { name: "CPRA Creator", href: "/univers/cpra-creator" },
+      { name: "CPRA Market (Occasion)", href: "/univers/cpra-market" },
     ],
   },
-  { name: "Catalogue", href: "#catalogue" },
-  { name: "Formation", href: "#formation" },
-  { name: "Service IA", href: "#ia" },
-  { name: "Secteurs", href: "#secteurs" },
-  { name: "Carrière", href: "#carriere" },
-  { name: "À propos", href: "#apropos" },
-  { name: "Contact", href: "#contact" },
+  { name: "Catalogue", href: "/#catalogue" },
+  { name: "Formation", href: "/#formation" },
+  { name: "Service IA", href: "/#ia" },
+  { name: "Carrière", href: "/#carriere" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 export function Header() {
@@ -143,7 +143,7 @@ export function Header() {
 
           <div className="hidden xl:block">
             <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-              <Link href="#contact">Demander un devis</Link>
+              <Link href="/#besoins">Publier un besoin</Link>
             </Button>
           </div>
 
@@ -194,8 +194,8 @@ export function Header() {
                   asChild
                   className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                 >
-                  <Link href="#contact" onClick={() => setMobileMenuOpen(false)}>
-                    Demander un devis
+                  <Link href="/#besoins" onClick={() => setMobileMenuOpen(false)}>
+                    Publier un besoin
                   </Link>
                 </Button>
               </div>

@@ -3,15 +3,14 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Beaker, Shield, Sparkles, Wrench } from "lucide-react";
+import { ArrowRight, Boxes, Handshake, Shield, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { LEGAL_NAME } from "@/lib/contact";
 
 const features = [
-  { icon: Beaker, label: "Ingénierie chimique" },
-  { icon: Wrench, label: "Performance & qualité" },
-  { icon: Shield, label: "Innovation & durabilité" },
-  { icon: Sparkles, label: "Études et conseils" },
+  { icon: Boxes, label: "Produits & équipements" },
+  { icon: Wrench, label: "Services & maintenance" },
+  { icon: Shield, label: "Fournisseurs vérifiés" },
+  { icon: Handshake, label: "Devis & mise en relation" },
 ];
 
 const heroSlides = [
@@ -71,21 +70,19 @@ export function Hero() {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
               <span className="w-2 h-2 bg-primary rounded-full animate-pulse" />
               <span className="text-sm text-primary font-medium">
-                {LEGAL_NAME}
+                Plateforme multiservices B2C &amp; B2B
               </span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-foreground">
-              La chimie au service de{" "}
-              <span className="text-primary">l&apos;industrie</span>, de la{" "}
-              <span className="text-primary">performance</span> et de la{" "}
-              <span className="text-primary">durabilité</span>
+              Tout ce dont vous avez besoin,{" "}
+              <span className="text-primary">au même endroit</span>
             </h1>
 
             <p className="text-lg text-muted-foreground max-w-xl">
-              Votre partenaire de confiance pour la distribution de réactifs
-              chimiques, équipements industriels et solutions de traitement des
-              surfaces au Cameroun et en Afrique.
+              Produits, équipements, services, occasion et mise en relation avec
+              les bons fournisseurs et prestataires. Pour les particuliers et les
+              professionnels, au Cameroun.
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -94,8 +91,8 @@ export function Hero() {
                 size="lg"
                 className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2"
               >
-                <Link href="#catalogue">
-                  Découvrir nos produits
+                <Link href="#univers">
+                  Explorer les univers
                   <ArrowRight className="h-5 w-5" />
                 </Link>
               </Button>
@@ -105,7 +102,7 @@ export function Hero() {
                 variant="outline"
                 className="border-border text-foreground hover:bg-secondary"
               >
-                <Link href="#contact">Contactez-nous</Link>
+                <Link href="#besoins">Publier un besoin</Link>
               </Button>
             </div>
 
@@ -143,29 +140,29 @@ export function Hero() {
           <div className="hidden lg:grid grid-cols-2 gap-6">
             <div className="space-y-6">
               <div className="p-6 rounded-xl bg-white shadow-md border border-border">
-                <div className="text-4xl font-bold text-primary">10+</div>
+                <div className="text-4xl font-bold text-primary">8</div>
                 <div className="text-muted-foreground mt-1">
-                  Secteurs d&apos;intervention
+                  Univers de services
                 </div>
               </div>
               <div className="p-6 rounded-xl bg-white shadow-md border border-border">
-                <div className="text-4xl font-bold text-primary">100+</div>
+                <div className="text-4xl font-bold text-primary">B2C+B2B</div>
                 <div className="text-muted-foreground mt-1">
-                  Produits chimiques
+                  Particuliers &amp; entreprises
                 </div>
               </div>
             </div>
             <div className="space-y-6 mt-12">
               <div className="p-6 rounded-xl bg-white shadow-md border border-border">
-                <div className="text-4xl font-bold text-primary">50+</div>
+                <div className="text-4xl font-bold text-primary">100+</div>
                 <div className="text-muted-foreground mt-1">
-                  Équipements industriels
+                  Produits &amp; équipements
                 </div>
               </div>
               <div className="p-6 rounded-xl bg-white shadow-md border border-border">
                 <div className="text-4xl font-bold text-primary">24/7</div>
                 <div className="text-muted-foreground mt-1">
-                  Support technique
+                  Devis &amp; mise en relation
                 </div>
               </div>
             </div>
