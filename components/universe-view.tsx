@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, Check, Mail, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSiteStore } from "@/components/site-store";
@@ -49,36 +50,47 @@ export function UniverseView({ universe }: { universe: Universe }) {
   )}`;
 
   return (
-    <div className="pt-28 pb-20">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Link
-          href="/#univers"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary mb-8"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Tous les univers
-        </Link>
-
-        {/* En-tête de l'univers */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-5 mb-8">
-          <div className="p-4 rounded-2xl bg-primary/10 w-fit">
-            {Icon && <Icon className="h-9 w-9 text-primary" />}
-          </div>
-          <div>
-            {universe.label && (
-              <span className="text-xs font-semibold text-primary tracking-wide">
-                {universe.label}
-              </span>
-            )}
-            <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
-              {universe.name}
-            </h1>
-            <p className="mt-1 text-lg text-muted-foreground">
-              {universe.tagline}
-            </p>
+    <div className="pb-20">
+      {/* Bannière image de l'univers */}
+      <div className="relative h-72 sm:h-80 w-full">
+        <Image
+          src={universe.image}
+          alt={universe.name}
+          fill
+          priority
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/55 to-black/30" />
+        <div className="absolute inset-0 pt-24 pb-8 flex flex-col justify-end">
+          <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+            <Link
+              href="/#univers"
+              className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white mb-4"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Tous les univers
+            </Link>
+            <div className="flex items-center gap-4">
+              <div className="p-3 rounded-2xl bg-primary/90 backdrop-blur-sm">
+                {Icon && <Icon className="h-8 w-8 text-white" />}
+              </div>
+              <div>
+                {universe.label && (
+                  <span className="text-xs font-semibold text-white/90 tracking-wide">
+                    {universe.label}
+                  </span>
+                )}
+                <h1 className="text-3xl sm:text-4xl font-bold text-white">
+                  {universe.name}
+                </h1>
+                <p className="mt-1 text-white/85">{universe.tagline}</p>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
         <p className="text-muted-foreground max-w-3xl mb-10">
           {universe.description}
         </p>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   Building2,
@@ -50,25 +51,38 @@ export function Universes() {
               <Link
                 key={universe.slug}
                 href={`/univers/${universe.slug}`}
-                className="group flex flex-col rounded-xl border border-border bg-card p-6 hover:border-primary/60 hover:shadow-lg transition-all"
+                className="group relative rounded-xl overflow-hidden border border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-lg bg-primary/10 group-hover:bg-primary transition-colors">
-                    <Icon className="h-6 w-6 text-primary group-hover:text-primary-foreground transition-colors" />
+                <div className="relative h-52">
+                  <Image
+                    src={universe.image}
+                    alt={universe.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/10" />
+
+                  <div className="absolute top-3 left-3 p-2.5 rounded-lg bg-primary/90 backdrop-blur-sm">
+                    <Icon className="h-5 w-5 text-white" />
                   </div>
-                  <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                  <div className="absolute top-3 right-3 h-8 w-8 rounded-full bg-white/15 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <ArrowRight className="h-4 w-4 text-white" />
+                  </div>
+
+                  <div className="absolute inset-x-0 bottom-0 p-4">
+                    {universe.label && (
+                      <span className="text-[11px] font-semibold text-white/90 tracking-wide">
+                        {universe.label}
+                      </span>
+                    )}
+                    <h3 className="font-semibold text-white leading-tight">
+                      {universe.name}
+                    </h3>
+                    <p className="mt-1 text-xs text-white/80 line-clamp-2">
+                      {universe.tagline}
+                    </p>
+                  </div>
                 </div>
-                {universe.label && (
-                  <span className="text-[11px] font-semibold text-primary tracking-wide mb-1">
-                    {universe.label}
-                  </span>
-                )}
-                <h3 className="font-semibold text-card-foreground">
-                  {universe.name}
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
-                  {universe.tagline}
-                </p>
               </Link>
             );
           })}
