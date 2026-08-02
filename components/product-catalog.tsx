@@ -21,7 +21,18 @@ import {
 } from "@/components/ui/dialog";
 import { BRAND_NAME, buildMailtoUrl } from "@/lib/contact";
 import { useSiteStore } from "@/components/site-store";
+import { useCart } from "@/components/cart-store";
 import type { Product } from "@/lib/site-defaults";
+
+function toCartItem(product: Product) {
+  return {
+    id: product.id,
+    name: product.name,
+    category: product.category,
+    specs: product.specs,
+    image: product.image,
+  };
+}
 
 function buildProductMailto(product: Product, intent: "devis" | "commande") {
   const isOrder = intent === "commande";
@@ -51,6 +62,7 @@ function buildProductMailto(product: Product, intent: "devis" | "commande") {
 export function ProductCatalog() {
   const { state } = useSiteStore();
   const { products, categories } = state;
+  const { addItem } = useCart();
   const [activeCategory, setActiveCategory] = useState("Tous");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -204,15 +216,15 @@ export function ProductCatalog() {
                     </a>
                   </Button>
                   <Button
-                    asChild
                     size="sm"
                     className="bg-primary text-primary-foreground hover:bg-primary/90"
-                    onClick={(event) => event.stopPropagation()}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      addItem(toCartItem(product));
+                    }}
                   >
-                    <a href={buildProductMailto(product, "commande")}>
-                      <ShoppingCart className="h-4 w-4" />
-                      Commander
-                    </a>
+                    <ShoppingCart className="h-4 w-4" />
+                    Ajouter
                   </Button>
                 </div>
               </div>
@@ -305,13 +317,14 @@ export function ProductCatalog() {
                     </a>
                   </Button>
                   <Button
-                    asChild
                     className="bg-primary text-primary-foreground hover:bg-primary/90"
+                    onClick={() => {
+                      addItem(toCartItem(selectedProduct));
+                      setSelectedProduct(null);
+                    }}
                   >
-                    <a href={buildProductMailto(selectedProduct, "commande")}>
-                      <ShoppingCart className="h-4 w-4" />
-                      Commander ce produit
-                    </a>
+                    <ShoppingCart className="h-4 w-4" />
+                    Ajouter à ma commande
                   </Button>
                 </DialogFooter>
               </div>

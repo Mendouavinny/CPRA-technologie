@@ -10,25 +10,30 @@ import { About } from "@/components/about";
 import { Contact } from "@/components/contact";
 import { Footer } from "@/components/footer";
 import { SiteStoreProvider } from "@/components/site-store";
+import { CartProvider } from "@/components/cart-store";
+import { Cart } from "@/components/cart";
 import { AdminBar } from "@/components/admin/admin-bar";
 
 export default function Home() {
   return (
     <SiteStoreProvider>
-      <main className="min-h-screen bg-background">
-        <Header />
-        <Hero />
-        <Services />
-        <ProductCatalog />
-        <Formation />
-        <AiServices />
-        <Sectors />
-        <Careers />
-        <About />
-        <Contact />
-        <Footer />
-        <AdminBar />
-      </main>
+      <CartProvider>
+        <main className="min-h-screen bg-background">
+          <Header />
+          <Hero />
+          <Services />
+          <ProductCatalog />
+          <Formation />
+          <AiServices />
+          <Sectors />
+          <Careers />
+          <About />
+          <Contact />
+          <Footer />
+          <Cart />
+          <AdminBar />
+        </main>
+      </CartProvider>
     </SiteStoreProvider>
   );
 }
